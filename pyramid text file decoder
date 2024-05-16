@@ -1,0 +1,34 @@
+def decode(message_file):
+    with open(message_file, 'r') as file:
+        lines = file.readlines()
+
+    # Parse the lines into (number, word) tuples
+    num_word_pairs = []
+    for line in lines:
+        num, word = line.split()
+        num_word_pairs.append((int(num), word))
+
+    # Sort the pairs by number
+    num_word_pairs.sort()
+
+    # Determine the end positions of each line in the pyramid
+    end_positions = []
+    current_end = 0
+    n = 1
+    while current_end + n <= len(num_word_pairs):
+        current_end += n
+        end_positions.append(current_end)
+        n += 1
+
+    # Extract the words at the end of each pyramid line
+    message_words = [num_word_pairs[pos - 1][1] for pos in end_positions]
+
+    # Join the words to form the decoded message
+    decoded_message = ' '.join(message_words)
+
+    return decoded_message
+
+# Example usage:
+message_file = 'encoded_message.txt'
+decoded_message = decode(message_file)
+print(decoded_message)
